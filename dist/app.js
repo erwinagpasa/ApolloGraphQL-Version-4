@@ -1,52 +1,39 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-const books = [
-    {
-        title: 'The Awakening',
-        author: 'Kate Chopin',
-    },
-    {
-        title: 'City of Glass',
-        author: 'Paul Auster',
-    },
-    {
-        title: 'erwin agpasa',
-        author: 'aha!',
-    },
-];
-const resolvers = {
-    Query: {
-        books: () => books,
-    },
-};
-// A schema is a collection of type definitions (hence "typeDefs")
-// that together define the "shape" of queries that are executed against
-// your data.
-const typeDefs = `#graphql
-  # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
-
-  # This "Book" type defines the queryable fields for every book in our data source.
-  type Book {
-    title: String
-    author: String
-  }
-
-  # The "Query" type is special: it lists all of the available queries that
-  # clients can execute, along with the return type for each. In this
-  # case, the "books" query returns an array of zero or more Books (defined above).
-  type Query {
-    books: [Book]
-  }
-`;
+import allResolvers from './resolvers';
+import allTypeDefs from './typedefs';
+import { DataSource } from 'typeorm';
+import dotenv from 'dotenv';
+// import context from './context'
+dotenv.config();
 const server = new ApolloServer({
-    typeDefs,
-    resolvers,
+    typeDefs: allTypeDefs,
+    resolvers: allResolvers,
 });
-// Passing an ApolloServer instance to the `startStandaloneServer` function:
-//  1. creates an Express app
-//  2. installs your ApolloServer instance as middleware
-//  3. prepares your app to handle incoming requests
-const { url } = await startStandaloneServer(server, {
+startStandaloneServer(server, {
     listen: { port: 4000 },
+    // context: context,
+})
+    .then(({ url }) => {
+    console.log(`🚀  Server ready at: ${url}`);
+    const AppDataSource = new DataSource({
+        type: 'mysql',
+        host: process.env.DB_HOST,
+        port: 3306,
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+        synchronize: true,
+    });
+    AppDataSource.initialize()
+        .then(() => {
+        console.log('Data Source has been initialized!');
+    })
+        .catch((err) => {
+        console.error('Error during Data Source initialization', err);
+    });
+})
+    .catch((error) => {
+    console.error('Error starting server:', error);
 });
-console.log(`🚀  Server ready at: ${url}`);
+//# sourceMappingURL=app.js.map
