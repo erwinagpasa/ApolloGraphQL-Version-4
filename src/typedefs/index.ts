@@ -1,4 +1,4 @@
-import booksTypedefs from "./books";
+import booksTypedefs from "./books.js";
 
 
 const allTypeDefs = [

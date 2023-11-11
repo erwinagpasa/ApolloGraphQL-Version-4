@@ -6,8 +6,7 @@
   "scripts": {
     "compile": "tsc",
     "start": "npm run compile && nodemon dist/app.js",
-    "dev": "nodemon src/app.ts",
-    "build": "tsc -p ."
+    "dev": "nodemon src/app.ts"
   },
   "keywords": [],
   "author": "",

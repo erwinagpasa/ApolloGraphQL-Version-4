@@ -1,4 +1,4 @@
-import booksResolvers from "./books";
+import booksResolvers from "./books.js";
 const allResolvers = [
     booksResolvers
 ];

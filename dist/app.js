@@ -1,7 +1,7 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import allResolvers from './resolvers';
-import allTypeDefs from './typedefs';
+import allResolvers from './resolvers/index.js';
+import allTypeDefs from './typedefs/index.js';
 import { DataSource } from 'typeorm';
 import dotenv from 'dotenv';
 // import context from './context'

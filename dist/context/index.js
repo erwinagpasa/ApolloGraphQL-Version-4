@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import throwCustomError, { ErrorTypes, } from '../helpers/error-handler.helper';
+import throwCustomError, { ErrorTypes, } from '../helpers/error-handler.helper.js';
 const getUser = async (token) => {
     try {
         if (token) {
