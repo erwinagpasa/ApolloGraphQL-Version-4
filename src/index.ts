@@ -1,33 +1,43 @@
 import { ApolloServer } from '@apollo/server';
-import { startStandaloneServer } from '@apollo/server/standalone';
-import allResolvers from './resolvers/index.js';
-import allTypeDefs from './typedefs/index.js';
-import allEntities from './models/index.js';
+import { expressMiddleware } from '@apollo/server/express4';
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { DataSource } from 'typeorm';
-import dotenv from 'dotenv';
+import http from 'http';
 import cors from 'cors';
-// import context from './context'
+import express from 'express';
+import dotenv from 'dotenv';
 
+// Import GraphQL schema, resolvers, and models
+import allTypeDefs from './typedefs/index.js';
+import allResolvers from './resolvers/index.js';
+import allEntities from './models/index.js';
 
+dotenv.config(); // Load environment variables from .env file
 
-dotenv.config();
+// Define the context interface
+interface MyContext {
+  token?: string;
+}
 
-const server = new ApolloServer({
+// Create an Express app
+const app = express();
+const httpServer = http.createServer(app);
+
+// Create an Apollo Server instance
+const server = new ApolloServer<MyContext>({
   typeDefs: allTypeDefs,
   resolvers: allResolvers,
-  introspection: true
+  introspection: true, // Enable introspection for GraphQL Playground
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })], // Enable graceful shutdown
 });
 
+// Function to start the server
+async function startServer() {
+  try {
+    // Start the Apollo Server
+    await server.start();
 
-
-
-startStandaloneServer(server, {
-  listen: { port: 4000 },
-  // context: context,
-})
-  .then(({ url }) => {
-    console.log(`🚀  Server ready at: ${url}`);
-
+    // Initialize data source
     const AppDataSource = new DataSource({
       type: 'mysql',
       host: process.env.DB_HOST,
@@ -36,20 +46,36 @@ startStandaloneServer(server, {
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: allEntities,
-      synchronize: true,
+      synchronize: true, // Synchronize schema with database
     });
 
-    AppDataSource.initialize()
-      .then(() => {
-        console.log('Data Source has been initialized!');
-      })
-      .catch((err) => {
-        console.error('Error during Data Source initialization', err);
-      });
+    // Initialize data source
+    await AppDataSource.initialize();
+    console.log('Data Source has been initialized!');
 
-  })
-  .catch((error) => {
-    console.error('Error starting server:', error);
-  });
+    // Setup middleware for Apollo Server
+    app.use(
+      '/graphql',
+      cors(), // Enable CORS
+      express.json(), // Parse JSON bodies
+      expressMiddleware(server, {
+        context: async ({ req }) => ({ token: req.headers.token }), // Set context with token from request header
+      }),
+    );
 
+    // Start the HTTP server
+    await new Promise<void>((resolve) => httpServer.listen({ port: 4000 }, resolve));
 
+    app.use((req: any, res: any) => {
+      res.send("🚀 Server ready at http://localhost:4000/graphql")
+    })
+    console.log(`🚀 Server ready at http://localhost:4000/graphql`);
+
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1); // Exit with error code 1
+  }
+}
+
+// Call the function to start the server
+startServer();
