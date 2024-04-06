@@ -6,7 +6,10 @@
   "scripts": {
     "compile": "tsc",
     "start": "npm run compile && nodemon dist/index.js",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "build": "rimraf dist && tsc",
+    "ts.check": "tsc --project tsconfig.json",
+    "add-build": "git add dist"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +24,8 @@
     "graphql-tag": "^2.12.6",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.6.3",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^5.0.5",
     "typeorm": "^0.3.17"
   },
   "devDependencies": {
