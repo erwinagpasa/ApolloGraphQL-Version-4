@@ -36,4 +36,4 @@ startStandaloneServer(server, {
     .catch((error) => {
     console.error('Error starting server:', error);
 });
-//# sourceMappingURL=app.js.map
+//# sourceMappingURL=index.js.map

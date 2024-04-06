@@ -2,11 +2,11 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "compile": "tsc",
-    "start": "npm run compile && nodemon dist/app.js",
-    "dev": "nodemon src/app.ts"
+    "start": "npm run compile && nodemon dist/index.js",
+    "dev": "nodemon src/index.ts"
   },
   "keywords": [],
   "author": "",
