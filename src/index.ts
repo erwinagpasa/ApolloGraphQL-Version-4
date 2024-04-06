@@ -2,8 +2,10 @@ import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import allResolvers from './resolvers/index.js';
 import allTypeDefs from './typedefs/index.js';
+import allEntities from './models/index.js';
 import { DataSource } from 'typeorm';
 import dotenv from 'dotenv';
+import cors from 'cors';
 // import context from './context'
 
 
@@ -15,6 +17,8 @@ const server = new ApolloServer({
   resolvers: allResolvers,
   introspection: true
 });
+
+
 
 
 startStandaloneServer(server, {
@@ -31,6 +35,7 @@ startStandaloneServer(server, {
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
+      entities: allEntities,
       synchronize: true,
     });
 

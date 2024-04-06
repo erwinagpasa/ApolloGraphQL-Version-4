@@ -1,1 +1,1 @@
-{"version":3,"file":"index.js","sourceRoot":"","sources":["../../src/resolvers/index.ts"],"names":[],"mappings":"AAAA,OAAO,cAAc,MAAM,YAAY,CAAC;AAGxC,MAAM,YAAY,GAAG;IACnB,cAAc;CACf,CAAC;AAEF,eAAe,YAAY,CAAC"}
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../src/resolvers/index.ts"],"names":[],"mappings":"AACA,OAAO,aAAa,MAAM,6BAA6B,CAAC;AAExD,MAAM,YAAY,GAAG;IACnB,aAAa;CACd,CAAC;AAEF,eAAe,YAAY,CAAC"}

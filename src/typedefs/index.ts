@@ -1,8 +1,8 @@
-import booksTypedefs from "./books.js";
+import userTypeDefs from "./accounts/userTypedefs.js";
 
 
 const allTypeDefs = [
-  booksTypedefs
+  userTypeDefs
 
 ];
 

@@ -1,6 +1,6 @@
-import booksTypedefs from "./books.js";
+import userTypeDefs from "./accounts/userTypedefs.js";
 const allTypeDefs = [
-    booksTypedefs
+    userTypeDefs
 ];
 export default allTypeDefs;
 //# sourceMappingURL=index.js.map

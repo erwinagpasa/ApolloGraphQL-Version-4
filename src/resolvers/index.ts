@@ -1,8 +1,8 @@
-import booksResolvers from "./books.js";
 
+import userResolvers from './accounts/userResolvers.js';
 
 const allResolvers = [
-  booksResolvers
+  userResolvers
 ];
 
 export default allResolvers;
