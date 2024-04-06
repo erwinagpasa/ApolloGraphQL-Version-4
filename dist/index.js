@@ -9,6 +9,7 @@ dotenv.config();
 const server = new ApolloServer({
     typeDefs: allTypeDefs,
     resolvers: allResolvers,
+    introspection: true
 });
 startStandaloneServer(server, {
     listen: { port: 4000 },

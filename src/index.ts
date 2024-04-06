@@ -13,6 +13,7 @@ dotenv.config();
 const server = new ApolloServer({
   typeDefs: allTypeDefs,
   resolvers: allResolvers,
+  introspection: true
 });
 
 
